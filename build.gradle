@@ -20,8 +20,18 @@ apply plugin:"eclipse"
 apply plugin:"idea"
 apply plugin:"war"
 apply plugin:"org.grails.grails-web"
+
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        if(details.requested.group == 'org.grails' && details.requested.name.startsWith('grails-datastore')) {
+            details.useVersion("5.0.12.BUILD-SNAPSHOT")
+        }
+    }
+}
+
 apply plugin:"org.grails.grails-gsp"
 apply plugin:"asset-pipeline"
+
 
 ext {
     grailsVersion = project.grailsVersion
@@ -65,12 +75,4 @@ dependencies {
 assets {
     minifyJs = true
     minifyCss = true
-}
-
-configurations.all {
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        if(details.requested.group == 'org.grails' && details.requested.name.startsWith('grails-datastore')) {
-            details.useVersion("5.0.12.BUILD-SNAPSHOT")
-        }
-    }
 }
